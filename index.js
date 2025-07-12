@@ -28,6 +28,13 @@ app.get('/test-db', async (req, res) => {
   }
 });
 
+app.post('/api/test-post', (req, res) => {
+  console.log("📩 POST recibido en /api/test-post:", req.body);
+  res.json({
+    mensaje: "POST recibido correctamente",
+    datos: req.body
+  });
+});
 
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
