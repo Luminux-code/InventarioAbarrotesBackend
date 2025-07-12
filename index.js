@@ -1,7 +1,7 @@
 // index.js
 const express = require('express');
-require('dotenv').config();
 const app = express();
+require('dotenv').config();
 const db = require('./config/database');
 
 app.use(express.json());
@@ -16,6 +16,16 @@ app.get('/test-db', (req, res) => {
     res.json(results[0]);
   });
 });
+
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
+
+// Ruta protegida con JWT
+const authMiddleware = require('./middlewares/authMiddleware');
+app.get('/api/privado', authMiddleware, (req, res) => {
+  res.json({ mensaje: 'Acceso concedido', usuario: req.user });
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
