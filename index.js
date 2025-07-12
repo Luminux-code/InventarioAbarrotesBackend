@@ -10,12 +10,15 @@ app.get('/', (req, res) => {
   res.send('Servidor funcionando');
 });
 
-app.get('/test-db', (req, res) => {
-  connection.query('SELECT 1 + 1 AS resultado', (err, results) => {
-    if (err) return res.status(500).json({ error: err });
+app.get('/test-db', async (req, res) => {
+  try {
+    const [results] = await db.query('SELECT 1 + 1 AS resultado');
     res.json(results[0]);
-  });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
+
 
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
