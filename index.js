@@ -3,6 +3,15 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const db = require('./config/database');
+const { sequelize } = require('./models'); // Asegúrate de exportarlo en models/index.js
+
+sequelize.sync() // crea las tablas si no existen
+  .then(() => {
+    console.log('🟢 Tablas sincronizadas correctamente');
+  })
+  .catch((err) => {
+    console.error('🔴 Error al sincronizar las tablas:', err);
+  });
 
 app.use(express.json());
 
