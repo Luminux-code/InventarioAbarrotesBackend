@@ -6,6 +6,7 @@ const { User } = require("../models");
 const SECRET_KEY = process.env.JWT_SECRET || "clave_secreta_segura";
 
 exports.register = async (req, res) => {
+    console.log("📩 Se llamó a POST /api/auth/register con:", req.body);
   const { nombre, email, password } = req.body;
 
   try {
