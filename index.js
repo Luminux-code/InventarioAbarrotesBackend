@@ -39,6 +39,10 @@ app.post('/api/test-post', (req, res) => {
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
 
+const userRoutes = require('./routes/user');
+app.use('/api/users', userRoutes);
+
+
 // Ruta protegida con JWT
 const authMiddleware = require('./middlewares/authMiddleware');
 app.get('/api/privado', authMiddleware, (req, res) => {

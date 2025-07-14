@@ -6,8 +6,7 @@ const { User } = require("../models");
 const SECRET_KEY = process.env.JWT_SECRET || "clave_secreta_segura";
 
 exports.register = async (req, res) => {
-    console.log("📩 Se llamó a POST /api/auth/register con:", req.body);
-  const { nombre, email, password } = req.body;
+  const { nombre, email, password, rol } = req.body;
 
   try {
     const existe = await User.findOne({ where: { email } });
@@ -19,13 +18,19 @@ exports.register = async (req, res) => {
       nombre,
       email,
       password: hashedPassword,
+      rol, 
     });
 
-    res.status(201).json({ mensaje: "Usuario registrado", user: { id: user.id, email: user.email } });
+    res.status(201).json({
+      mensaje: "Usuario registrado",
+      user: { id: user.id, email: user.email, rol: user.rol }
+    });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Error en el servidor" });
   }
 };
+
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -37,7 +42,7 @@ exports.login = async (req, res) => {
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return res.status(400).json({ error: "Contraseña incorrecta" });
 
-    const token = jwt.sign({ id: user.id, email: user.email }, SECRET_KEY, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user.id, email: user.email, rol: user.rol }, SECRET_KEY, { expiresIn: "1h" });
 
     res.json({ mensaje: "Login exitoso", token });
   } catch (err) {
