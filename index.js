@@ -42,6 +42,9 @@ app.use('/api/auth', authRoutes);
 const userRoutes = require('./routes/user');
 app.use('/api/users', userRoutes);
 
+const configGeneralRoutes = require('./routes/configGeneral');
+app.use('/api/configuracion', configGeneralRoutes);
+
 
 // Ruta protegida con JWT
 const authMiddleware = require('./middlewares/authMiddleware');
