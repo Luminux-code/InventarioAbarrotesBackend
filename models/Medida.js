@@ -5,6 +5,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
+    },
+    nombre_corto: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
     }
   });
 };
