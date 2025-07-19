@@ -65,7 +65,7 @@ const proveedorRoutes = require('./routes/proveedor');
 app.use('/proveedores', proveedorRoutes);
 
 const inventarioRoutes = require('./routes/inventario');
-app.use('/inventario', inventarioRoutes);
+app.use('/api/inventario', inventarioRoutes);
 
 const dashboardRoutes = require('./routes/dashboard');
 app.use('/api/dashboard', dashboardRoutes);

@@ -1,36 +1,44 @@
-// controllers/dashboardController.js
+// controllers/inventarioController.js
 
-const { Op, fn, col } = require('sequelize');
-const { MovimientoCaja } = require('../models');
+const { Producto, DetalleVenta, DetalleCompra } = require('../models');
+const { Op } = require('sequelize');
 
-exports.getResumenCajaMes = async (req, res) => {
+exports.getResumenInventarioMensual = async (req, res) => {
   try {
-    const inicioMes = new Date();
-    inicioMes.setDate(1);
-    inicioMes.setHours(0, 0, 0, 0);
+    const { mes, anio } = req.query;
 
-    const finMes = new Date();
-    finMes.setMonth(finMes.getMonth() + 1);
-    finMes.setDate(0);
-    finMes.setHours(23, 59, 59, 999);
+    if (!mes || !anio) {
+      return res.status(400).json({ message: 'Debe proporcionar mes y año.' });
+    }
 
-    const movimientos = await MovimientoCaja.findAll({
+    const fechaInicio = new Date(`${anio}-${mes}-01`);
+    const fechaFin = new Date(fechaInicio);
+    fechaFin.setMonth(fechaFin.getMonth() + 1);
+
+    // Obtener ventas por producto
+    const ventas = await DetalleVenta.findAll({
+      attributes: ['productoId', [sequelize.fn('SUM', sequelize.col('cantidad')), 'cantidadVendida']],
+      include: [{ model: Producto, attributes: ['nombre'] }],
       where: {
-        fecha: {
-          [Op.between]: [inicioMes, finMes]
-        }
+        createdAt: { [Op.between]: [fechaInicio, fechaFin] }
       },
-      attributes: [
-        'tipo',
-        'subtipo',
-        [fn('SUM', col('monto')), 'total']
-      ],
-      group: ['tipo', 'subtipo']
+      group: ['productoId', 'Producto.id']
     });
 
-    res.json({ movimientos });
+    // Obtener compras por producto
+    const compras = await DetalleCompra.findAll({
+      attributes: ['productoId', [sequelize.fn('SUM', sequelize.col('cantidad')), 'cantidadComprada']],
+      include: [{ model: Producto, attributes: ['nombre'] }],
+      where: {
+        createdAt: { [Op.between]: [fechaInicio, fechaFin] }
+      },
+      group: ['productoId', 'Producto.id']
+    });
+
+    return res.json({ ventas, compras });
+
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error al obtener resumen de caja del mes.' });
+    console.error('Error al obtener resumen del inventario:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
   }
 };

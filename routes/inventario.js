@@ -1,8 +1,11 @@
+// routes/inventario.js
+
 const express = require('express');
 const router = express.Router();
-const ctrl = require('../controllers/inventarioController');
-const auth = require('../middlewares/authMiddleware');
+const inventarioController = require('../controllers/inventarioController');
+const authMiddleware = require('../middlewares/authMiddleware');
 
-router.get('/mensual', auth, ctrl.inventarioMensual); // ?mes=07&anio=2025
+// Ruta para obtener el resumen de inventario por mes y año
+router.get('/resumen-mensual', authMiddleware, inventarioController.getResumenInventarioMensual);
 
 module.exports = router;
