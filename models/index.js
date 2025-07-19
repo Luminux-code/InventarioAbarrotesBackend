@@ -10,9 +10,15 @@ const Configuracion = ConfiguracionModel(sequelize, Sequelize.DataTypes);
 const Medida = require('./Medida')(sequelize, Sequelize.DataTypes);
 const Categoria = require('./Categoria')(sequelize, Sequelize.DataTypes);
 const Producto = require('./Producto')(sequelize, Sequelize.DataTypes);
+const Caja = require('./Caja')(sequelize, Sequelize.DataTypes);
+const MovimientoCaja = require('./MovimientoCaja')(sequelize, Sequelize.DataTypes);
 
 Producto.belongsTo(Medida, { foreignKey: 'medidaId' });
 Producto.belongsTo(Categoria, { foreignKey: 'categoriaId' });
+
+Caja.hasMany(MovimientoCaja, { foreignKey: 'cajaId' });
+MovimientoCaja.belongsTo(Caja, { foreignKey: 'cajaId' });
+
 
 module.exports = {
   sequelize,
@@ -20,5 +26,7 @@ module.exports = {
   Configuracion,
   Medida,
   Categoria,
-  Producto
+  Producto,
+  Caja,
+  MovimientoCaja
 };

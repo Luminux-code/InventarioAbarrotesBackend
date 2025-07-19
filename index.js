@@ -52,6 +52,10 @@ app.use('/api/medidas', medidaRoutes);
 app.use('/api/categorias', categoriaRoutes);
 app.use('/api/productos', productoRoutes);
 
+const cajaRoutes = require('./routes/caja');
+app.use('/api/caja', cajaRoutes);
+
+
 
 // Ruta protegida con JWT
 const authMiddleware = require('./middlewares/authMiddleware');
