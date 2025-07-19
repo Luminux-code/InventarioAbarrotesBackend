@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ctrl = require('../controllers/proveedorController');
-const auth = require('../middlewares/auth'); // Protección JWT
+const auth = require('../middlewares/authMiddleware'); // Protección JWT
 
 router.get('/', auth, ctrl.listarProveedores);
 router.post('/', auth, ctrl.crearProveedor);
