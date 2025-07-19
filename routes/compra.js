@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ctrl = require('../controllers/compraController');
-const auth = require('../middlewares/auth'); // si usas JWT
+const auth = require('../middlewares/authMiddleware'); // si usas JWT
 
 router.post('/', auth, ctrl.crearCompra);
 router.get('/', auth, ctrl.listarCompras);
