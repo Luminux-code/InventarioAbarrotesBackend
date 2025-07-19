@@ -13,6 +13,8 @@ const modelDefiners = [
   require('./MovimientoCaja'),
   require('./Venta'),
   require('./DetalleVenta'),
+  require('./Compra'),
+  require('./DetalleCompra'),
 ];
 
 // Inicializar todos los modelos

@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM('ingreso', 'egreso'),
       allowNull: false
     },
+    subtipo: {
+      type: DataTypes.ENUM('venta', 'compra', 'gasto_operativo', 'abono', 'otro'),
+      allowNull: true
+    },
     monto: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false

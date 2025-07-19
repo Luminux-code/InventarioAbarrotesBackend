@@ -58,6 +58,23 @@ app.use('/api/caja', cajaRoutes);
 const ventasRoutes = require('./routes/ventas');
 app.use('/api/ventas', ventasRoutes);
 
+const compraRoutes = require('./compra');
+app.use('/compras', compraRoutes);
+
+const proveedorRoutes = require('./routes/proveedor');
+app.use('/proveedores', proveedorRoutes);
+
+const inventarioRoutes = require('./routes/inventario');
+app.use('/inventario', inventarioRoutes);
+
+const dashboardRoutes = require('./routes/dashboard');
+app.use('/api/dashboard', dashboardRoutes);
+
+
+const comprobanteRoutes = require('./routes/comprobantes');
+const reporteRoutes = require('./routes/reportes');
+app.use('/api/comprobantes', comprobanteRoutes);
+app.use('/api/reportes', reporteRoutes);
 
 // Ruta protegida con JWT
 const authMiddleware = require('./middlewares/authMiddleware');
