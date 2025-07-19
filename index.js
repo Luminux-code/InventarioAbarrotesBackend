@@ -58,7 +58,7 @@ app.use('/api/caja', cajaRoutes);
 const ventasRoutes = require('./routes/ventas');
 app.use('/api/ventas', ventasRoutes);
 
-const compraRoutes = require('./compra');
+const compraRoutes = require('./routes/compra');
 app.use('/compras', compraRoutes);
 
 const proveedorRoutes = require('./routes/proveedor');
