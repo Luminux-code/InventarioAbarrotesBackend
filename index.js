@@ -72,9 +72,9 @@ app.use('/api/dashboard', dashboardRoutes);
 
 
 const comprobanteRoutes = require('./routes/comprobante');
-const reporteRoutes = require('./routes/reportes');
+const reporteRoutes = require('./routes/reporte');
 app.use('/api/comprobante', comprobanteRoutes);
-app.use('/api/reportes', reporteRoutes);
+app.use('/api/reporte', reporteRoutes);
 
 // Ruta protegida con JWT
 const authMiddleware = require('./middlewares/authMiddleware');
