@@ -1,6 +1,5 @@
-// models/Caja.js
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Caja', {
+  const Caja = sequelize.define('Caja', {
     montoInicial: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false
@@ -35,4 +34,21 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     }
   });
+
+  Caja.associate = function(models) {
+    Caja.belongsTo(models.User, {
+      foreignKey: 'usuarioAperturaId',
+      as: 'usuarioApertura'
+    });
+    Caja.belongsTo(models.User, {
+      foreignKey: 'usuarioCierreId',
+      as: 'usuarioCierre'
+    });
+    Caja.hasMany(models.MovimientoCaja, {
+      foreignKey: 'cajaId',
+      as: 'movimientos'
+    });
+  };
+
+  return Caja;
 };

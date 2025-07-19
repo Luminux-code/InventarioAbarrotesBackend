@@ -1,6 +1,6 @@
 // models/Producto.js
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Producto', {
+  const Producto = sequelize.define('Producto', {
     nombre: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -17,4 +17,12 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
     }
   });
+
+  Producto.associate = function(models) {
+    Producto.belongsTo(models.Medida, { foreignKey: 'medidaId' });
+    Producto.belongsTo(models.Categoria, { foreignKey: 'categoriaId' });
+    Producto.hasMany(models.DetalleVenta, { foreignKey: 'productoId' });
+  };
+
+  return Producto;
 };

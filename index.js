@@ -55,6 +55,8 @@ app.use('/api/productos', productoRoutes);
 const cajaRoutes = require('./routes/caja');
 app.use('/api/caja', cajaRoutes);
 
+const ventasRoutes = require('./routes/ventas');
+app.use('/api/ventas', ventasRoutes);
 
 
 // Ruta protegida con JWT

@@ -2,31 +2,35 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
 
-const UserModel = require('./User');
-const ConfiguracionModel = require('./Configuracion');
+// Lista de modelos
+const modelDefiners = [
+  require('./User'),
+  require('./Configuracion'),
+  require('./Medida'),
+  require('./Categoria'),
+  require('./Producto'),
+  require('./Caja'),
+  require('./MovimientoCaja'),
+  require('./Venta'),
+  require('./DetalleVenta'),
+];
 
-const User = UserModel(sequelize, Sequelize.DataTypes);
-const Configuracion = ConfiguracionModel(sequelize, Sequelize.DataTypes);
-const Medida = require('./Medida')(sequelize, Sequelize.DataTypes);
-const Categoria = require('./Categoria')(sequelize, Sequelize.DataTypes);
-const Producto = require('./Producto')(sequelize, Sequelize.DataTypes);
-const Caja = require('./Caja')(sequelize, Sequelize.DataTypes);
-const MovimientoCaja = require('./MovimientoCaja')(sequelize, Sequelize.DataTypes);
+// Inicializar todos los modelos
+const db = {};
 
-Producto.belongsTo(Medida, { foreignKey: 'medidaId' });
-Producto.belongsTo(Categoria, { foreignKey: 'categoriaId' });
+for (const defineModel of modelDefiners) {
+  const model = defineModel(sequelize, Sequelize.DataTypes);
+  db[model.name] = model;
+}
 
-Caja.hasMany(MovimientoCaja, { foreignKey: 'cajaId' });
-MovimientoCaja.belongsTo(Caja, { foreignKey: 'cajaId' });
+// Ejecutar asociaciones si existen
+Object.values(db).forEach(model => {
+  if (model.associate) {
+    model.associate(db);
+  }
+});
 
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
-module.exports = {
-  sequelize,
-  User,
-  Configuracion,
-  Medida,
-  Categoria,
-  Producto,
-  Caja,
-  MovimientoCaja
-};
+module.exports = db;
